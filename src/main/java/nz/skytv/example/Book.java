@@ -11,17 +11,39 @@ import javax.validation.constraints.Size;
  */
 @ApiModel("Book")
 public class Book {
-    
+
+    /**
+     * @return the type
+     */
+    public BookType getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(BookType type) {
+        this.type = type;
+    }
+
+    public enum BookType {
+        SOFTCOVER, HARDCOVER, DELUXE;
+    }
+
     @ApiModelProperty(value = "The International Standard Book Number (ISBN) book identifier.", required = true)
     @NotNull
     private String isbn;
-    
+
+    @ApiModelProperty(value = "The Description.", required = true)
     @Size(min = 2)
     private String description;
 
-    public Book(){
+    @ApiModelProperty(value = "The binding types can be made to order using our selection of fine materials and customized cover decoration options.")
+    private BookType type;
+
+    public Book() {
     }
-    
+
     /**
      * @return the isbn
      */
@@ -49,5 +71,5 @@ public class Book {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
 }

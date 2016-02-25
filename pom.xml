@@ -57,6 +57,14 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>nz.skytv.example.SwaggerApplication</mainClass>
+                    <executable>true</executable>
+                    <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
+                    <arguments>
+                        <argument>--spring.profiles.active=mock</argument>
+                    </arguments>
+                </configuration>
             </plugin>
         </plugins>
     </build>
