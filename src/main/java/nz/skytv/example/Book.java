@@ -26,6 +26,20 @@ public class Book {
         this.type = type;
     }
 
+    /**
+     * @return the isbn2
+     */
+    public String getIsbn2() {
+        return isbn2;
+    }
+
+    /**
+     * @param isbn2 the isbn2 to set
+     */
+    public void setIsbn2(String isbn2) {
+        this.isbn2 = isbn2;
+    }
+
     public enum BookType {
         SOFTCOVER, HARDCOVER, DELUXE;
     }
@@ -33,6 +47,8 @@ public class Book {
     @ApiModelProperty(value = "The International Standard Book Number (ISBN) book identifier.", required = true)
     @NotNull
     private String isbn;
+    
+    private String isbn2;
 
     @ApiModelProperty(value = "The Description.", required = true)
     @Size(min = 2)

@@ -31,9 +31,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @RestController
-@Api(value = "Books", consumes ="application/json", produces = "application/json")
+@Api(value = "Books", consumes = "application/json", produces = "application/json")
 @SpringBootApplication
-public class SwaggerApplication {
+public class SwaggerApplication { 
 
     private static final Logger LOG = LoggerFactory.getLogger(SwaggerApplication.class);
 
@@ -42,11 +42,22 @@ public class SwaggerApplication {
     static class SwaggerConfig {
 
         @Bean
-        public Docket api() {
+        public Docket businessApi() {
             return new Docket(DocumentationType.SWAGGER_2)
+                     .groupName("Business")
                     .select()
                     .apis(RequestHandlerSelectors.any())
                     .paths(PathSelectors.ant("/rest/**"))
+                    .build();
+        }
+        
+        @Bean
+        public Docket operationsApi() {
+            return new Docket(DocumentationType.SWAGGER_2)
+                     .groupName("Operations")
+                    .select()
+                    .apis(RequestHandlerSelectors.any())
+                    .paths(PathSelectors.ant("/foo/**"))
                     .build();
         }
 
@@ -67,8 +78,14 @@ public class SwaggerApplication {
         SpringApplication.run(Application.class, args);
     }
 
+     @ApiOperation(value = "Hello world", notes = "Hello World.",  tags = {"foo"})
+       @RequestMapping(value = "/foo/bar", method = RequestMethod.GET, produces = "text/plain")
+    public String index() {
+        return "Hello";
+    }
+    
     @RequestMapping(value = {"/rest/books"}, method = RequestMethod.GET)
-    @ApiOperation(value = "Retrieve the list of books", notes = "Retrieve books.", response = Book.class)
+    @ApiOperation(value = "Retrieve the list of books", notes = "Retrieve books.", response = Book.class, tags = {"book","searches"})
     @ApiResponses({
         @ApiResponse(code = HttpURLConnection.HTTP_OK, message
                 = "Books retrieved successfully"),
@@ -80,7 +97,7 @@ public class SwaggerApplication {
         return Arrays.asList(new Book());
     }
 
-    @ApiOperation(value = "Create a book", notes = "Create a book.", response = Book.class)
+    @ApiOperation(value = "Create a book", notes = "Create a book.", response = Book.class, tags = {"book","updates"})
     @ApiResponses({
         @ApiResponse(code = HttpURLConnection.HTTP_CREATED, message
                 = "Book created successfully"),
@@ -93,7 +110,7 @@ public class SwaggerApplication {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Delete a books", notes = "Delete a book.", response = Book.class)
+    @ApiOperation(value = "Delete a books", notes = "Delete a book.", response = Book.class, tags = {"book"})
     @ApiResponses({
         @ApiResponse(code = HttpURLConnection.HTTP_OK, message
                 = "Book deleted successfully"),
@@ -106,7 +123,7 @@ public class SwaggerApplication {
         LOG.debug("delete {}", isbn);
     }
 
-    @ApiOperation(value = "Update a book", notes = "Update a book.", response = Book.class)
+    @ApiOperation(value = "Update a book", notes = "Update a book.", response = Book.class, tags = {"book","updates"})
     @ApiResponses({
         @ApiResponse(code = HttpURLConnection.HTTP_OK, message
                 = "Book updated successfully"),
